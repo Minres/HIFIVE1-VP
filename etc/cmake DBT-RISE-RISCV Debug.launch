@@ -9,7 +9,7 @@
 <booleanAttribute key="de.toem.impulse.launchrestart" value="true"/>
 <intAttribute key="de.toem.impulse.launchterminate" value="1"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_LAUNCH_CONFIGURATION_BUILD_SCOPE" value="${none}"/>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/DBT-RISE-RISCV/etc/cmake.sh}"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="${workspace_loc:/RISCV-VP/etc/cmake.sh}"/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS" value="-DCMAKE_BUILD_TYPE=Debug .."/>
 <stringAttribute key="org.eclipse.ui.externaltools.ATTR_WORKING_DIRECTORY" value="${workspace_loc:/DBT-RISE-RISCV}"/>
 </launchConfiguration>

@@ -17,7 +17,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.1751741082." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.debug.1289745146" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.debug">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.GNU_ELF;org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.exe.debug.1460698591" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.debug"/>
-							<builder buildPath="/DBT-RISE-RISCV/build/Debug" id="de.marw.cdt.cmake.core.genscriptbuilder.2135578907" keepEnvironmentInBuildfile="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
+							<builder buildPath="/RISCV-VP/build/Debug" id="de.marw.cdt.cmake.core.genscriptbuilder.2135578907" keepEnvironmentInBuildfile="false" name="CMake Builder (portable)" parallelBuildOn="false" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.366643800" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1510612390" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug">
 								<option id="gnu.cpp.compiler.exe.debug.option.optimization.level.1768317780" name="Optimization Level" superClass="gnu.cpp.compiler.exe.debug.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
@@ -48,9 +48,8 @@
 				<options/>
 				<linux command="cmake" generator="UnixMakefiles" use-default="true">
 					<defs>
-						<def name="CMAKE_VERBOSE_MAKEFILE" type="BOOL" val="OFF"/>
+						<def name="CMAKE_VERBOSE_MAKEFILE" type="BOOL" val="ON"/>
 					</defs>
-					<undefs/>
 				</linux>
 				<win32 command="cmake" generator="MinGWMakefiles" use-default="true">
 					<defs/>
@@ -74,7 +73,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.exe.release.1745230171." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.release.2006835092" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.release">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.GNU_ELF;org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.exe.release.1630517313" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.release"/>
-							<builder buildPath="/DBT-RISE-RISCV/build/Release" id="de.marw.cdt.cmake.core.genscriptbuilder.1359576856" keepEnvironmentInBuildfile="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
+							<builder buildPath="/RISCV-VP/build/Release" id="de.marw.cdt.cmake.core.genscriptbuilder.1359576856" keepEnvironmentInBuildfile="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1428458401" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.187095968" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release">
 								<option id="gnu.cpp.compiler.exe.release.option.optimization.level.73514910" name="Optimization Level" superClass="gnu.cpp.compiler.exe.release.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
@@ -125,7 +124,7 @@
 					<folderInfo id="cdt.managedbuild.config.gnu.exe.release.1745230171.1259602404." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.release.1502160352" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.release">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.GNU_ELF;org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.exe.release.689260696" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.release"/>
-							<builder buildPath="/DBT-RISE-RISCV/build/Release" id="de.marw.cdt.cmake.core.genscriptbuilder.775458297" keepEnvironmentInBuildfile="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
+							<builder buildPath="/RISCV-VP/build/Release" id="de.marw.cdt.cmake.core.genscriptbuilder.775458297" keepEnvironmentInBuildfile="false" name="CMake Builder (portable)" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.marw.cdt.cmake.core.genscriptbuilder"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1134372172" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1556984395" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.release">
 								<option id="gnu.cpp.compiler.exe.release.option.optimization.level.1353963182" name="Optimization Level" superClass="gnu.cpp.compiler.exe.release.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
@@ -169,21 +168,21 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="DBT-RISE-RISCV.cdt.managedbuild.target.gnu.exe.1695631616" name="Executable" projectType="cdt.managedbuild.target.gnu.exe"/>
+		<project id="RISCV-VP.cdt.managedbuild.target.gnu.exe.1695631616" name="Executable" projectType="cdt.managedbuild.target.gnu.exe"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="RelWithDebInfo">
-			<resource resourceType="PROJECT" workspacePath="/DBT-RISE-RISCV"/>
+			<resource resourceType="PROJECT" workspacePath="/RISCV-VP"/>
 		</configuration>
 		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/DBT-RISE-RISCV"/>
+			<resource resourceType="PROJECT" workspacePath="/RISCV-VP"/>
 		</configuration>
 		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/DBT-RISE-RISCV"/>
+			<resource resourceType="PROJECT" workspacePath="/RISCV-VP"/>
 		</configuration>
 		<configuration configurationName="Release">
-			<resource resourceType="PROJECT" workspacePath="/DBT-RISE-RISCV"/>
+			<resource resourceType="PROJECT" workspacePath="/RISCV-VP"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.3)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_CURRENT_SOURCE_DIR}/sc-components/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake)
 
 set(ENABLE_SCV TRUE CACHE BOOL "Enable use of SCV")
 set(ENABLE_SHARED TRUE CACHE BOOL "Build shared libraries")
@@ -15,14 +15,16 @@ IF(NOT ${GIT_BRANCH} MATCHES "master")
 endif()
 
 ### set the directory names of the submodules
-set(GIT_SUBMODULES elfio libGIS sc-components dbt-core)
-set(GIT_SUBMODULE_DIR_sc-components .)
+set(GIT_SUBMODULES elfio libGIS scc dbt-core)
+set(GIT_SUBMODULE_DIR_scc .)
 set(GIT_SUBMODULE_DIR_dbt-core .)
+set(GIT_SUBMODULE_DIR_riscv .)
 ### set each submodules's commit or tag that is to be checked out
 ### (leave empty if you want master)
 #set(GIT_SUBMODULE_VERSION_sc-comp 3af6b9836589b082c19d9131c5d0b7afa8ddd7cd)
-set(GIT_SUBMODULE_BRANCH_sc-components ${GIT_BRANCH})
+set(GIT_SUBMODULE_BRANCH_scc ${GIT_BRANCH})
 set(GIT_SUBMODULE_BRANCH_dbt-core ${GIT_BRANCH})
+set(GIT_SUBMODULE_BRANCH_riscv ${GIT_BRANCH})
 
 include(GNUInstallDirs)
 include(Submodules)
@@ -110,10 +112,8 @@ set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
 
 add_subdirectory(external)
 add_subdirectory(dbt-core)
-add_subdirectory(sc-components)
-add_subdirectory(softfloat)
-GET_DIRECTORY_PROPERTY(SOFTFLOAT_INCLUDE_DIRS DIRECTORY softfloat DEFINITION SOFTFLOAT_INCLUDE_DIRS)
 add_subdirectory(riscv)
+add_subdirectory(scc)
 add_subdirectory(platform)
 
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")

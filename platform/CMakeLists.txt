@@ -23,7 +23,7 @@ endif()
 # This sets the include directory for the reference project. This is the -I flag in gcc.
 
 add_dependent_subproject(dbt-core)
-add_dependent_subproject(sc-components)
+add_dependent_subproject(scc)
 add_dependent_subproject(riscv)
 
 include_directories(
