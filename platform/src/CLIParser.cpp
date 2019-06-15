@@ -49,7 +49,27 @@ CLIParser::CLIParser(int argc, char *argv[])
 
     build();
     try {
-        po::store(po::parse_command_line(argc, argv, desc), vm_); // can throw
+        // Variant 1: no non-options
+        //po::store(po::parse_command_line(argc, argv, desc), vm_); // can throw
+        // Variant 2: collect unrecognized options
+        //auto parsed = po::command_line_parser(argc, argv).options(desc).allow_unregistered().run();
+        //po::store(parsed, vm_); // can throw
+        // Variant 3: collect options in string vector
+        po::options_description hidden;
+        hidden.add_options()("argv", po::value<std::vector<std::string>>(), "arguments");
+
+        po::options_description all_opt;
+        po::positional_options_description posopt;
+        po::store(po::command_line_parser(argc, argv).
+                options(all_opt.add(desc).add(hidden)).
+                //allow_unregistered().
+                positional(posopt.add("argv", -1)).
+//              style(
+//                    po::command_line_style::default_style |
+//                    po::command_line_style::allow_slash_for_short).
+                run(),
+                vm_); // can throw
+
         // --help option
         if (vm_.count("help")) {
             std::cout << "DBT-RISE-RiscV simulator for RISC-V" << std::endl << desc << std::endl;

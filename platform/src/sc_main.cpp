@@ -108,7 +108,13 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
 	cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.gdb_server_port", parser.get<unsigned short>("gdb-port"));
     cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.dump_ir", parser.is_set("dump-ir"));
-    if (parser.is_set("elf")) cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.elf_file", parser.get<std::string>("elf"));
+    if (parser.is_set("elf"))
+        cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.elf_file", parser.get<std::string>("elf"));
+    else {
+        auto args = parser.get<std::vector<std::string>>("argv");
+        if(args.size())
+            cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.elf_file", args[0]);
+    }
     if (parser.is_set("quantum"))
         tlm::tlm_global_quantum::instance().set(sc_core::sc_time(parser.get<unsigned>("quantum"), sc_core::SC_NS));
     if (parser.is_set("reset")) {
