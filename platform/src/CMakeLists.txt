@@ -49,7 +49,7 @@ set_target_properties(${LIBRARY_NAME} PROPERTIES
 )
 
 # This is a make target, so you can do a "make riscv-sc"
-set(APPLICATION_NAME riscv.vp)
+set(APPLICATION_NAME riscv-vp)
 
 include_directories(${PROJECT_SOURCE_DIR}/incl)
 include_directories(${CONAN_INCLUDE_DIRS_SEASOCKS})
