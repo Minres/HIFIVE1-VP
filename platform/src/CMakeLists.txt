@@ -30,7 +30,7 @@ set(LIBRARY_NAME platform)
 #add_definitions(-DSC_DEFAULT_WRITER_POLICY=SC_MANY_WRITERS)
 
 # Define the library
-add_library(${LIBRARY_NAME} SHARED ${LIB_SOURCES})
+add_library(${LIBRARY_NAME} ${LIB_SOURCES})
 
 # Links the target exe against the libraries
 target_link_libraries(${LIBRARY_NAME} riscv_sc)

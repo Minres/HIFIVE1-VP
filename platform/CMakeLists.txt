@@ -11,6 +11,9 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 project("platform")
 
 include(Common)
+
+find_package(Boost COMPONENTS program_options system thread filesystem REQUIRED)
+
 # check that we have averything we need
 if(!SystemC_FOUND)
     message( FATAL_ERROR "SystemC library not found." )

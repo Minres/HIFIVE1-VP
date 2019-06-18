@@ -60,7 +60,6 @@ setup_conan()
 
 # This line finds the boost lib and headers. 
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
-find_package(Boost COMPONENTS program_options system thread filesystem REQUIRED)
 
 if(DEFINED ENV{LLVM_HOME})
 	find_path (LLVM_DIR LLVM-Config.cmake $ENV{LLVM_HOME}/lib/cmake/llvm)
@@ -69,6 +68,8 @@ find_package(LLVM REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 llvm_map_components_to_libnames(llvm_libs support core mcjit x86codegen x86asmparser)
+
+set(BUILD_SHARED_LIBS 1)
 
 find_package(Threads)
 find_package(Tcmalloc)
