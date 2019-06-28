@@ -34,6 +34,7 @@
 #define _CLINT_H_
 
 #include "scc/tlm_target.h"
+#include <tlm_core/tlm_1/tlm_req_rsp/tlm_1_interfaces/tlm_core_ifs.h>
 
 namespace iss {
 namespace arch {
@@ -48,25 +49,32 @@ namespace SiFive {
 class core_complex;
 }
 
-class clint : public sc_core::sc_module, public scc::tlm_target<> {
+class clint : public sc_core::sc_module, public scc::tlm_target<>, public tlm::tlm_peek_if<uint64_t> {
 public:
-    SC_HAS_PROCESS(clint);// NOLINT
     sc_core::sc_in<sc_core::sc_time> tlclk_i;
     sc_core::sc_in<sc_core::sc_time> lfclk_i;
     sc_core::sc_in<bool> rst_i;
     sc_core::sc_out<bool> mtime_int_o;
     sc_core::sc_out<bool> msip_int_o;
+    sc_core::sc_export<tlm::tlm_peek_if<uint64_t>> mtime_i{"mtime_i"};
+
     clint(sc_core::sc_module_name nm);
     virtual ~clint() override; // NOLINT // need to keep it in source file because of fwd declaration of clint_regs
 
 protected:
     void clock_cb();
     void reset_cb();
-    void update_mtime();
+    void mtime_evt_cb();
+    void update_mtime(bool force = false);
+    uint64_t peek( tlm::tlm_tag<uint64_t> *t = 0 ) const override;
+    bool nb_peek( uint64_t &t ) const override;
+    bool nb_can_peek( tlm::tlm_tag<uint64_t> *t = 0 ) const override;
+    const sc_core::sc_event &ok_to_peek( tlm::tlm_tag<uint64_t> *t = 0 ) const override;
+
     sc_core::sc_time clk, last_updt;
     unsigned cnt_fraction;
     std::unique_ptr<clint_regs> regs;
-    sc_core::sc_event mtime_evt;
+    sc_core::sc_event mtime_evt, dummy_evt;
 };
 
 } /* namespace sysc */

@@ -135,7 +135,7 @@ fe310::fe310(sc_core::sc_module_name nm)
     i_core_complex->timer_irq_i(s_mtime_int);
     i_core_complex->global_irq_i(s_core_int);
     i_core_complex->local_irq_i(s_local_int);
-
+    i_core_complex->mtime_o(i_clint->mtime_i);
     pins_i(i_gpio0->pins_i);
     i_gpio0->pins_o(pins_o);
 

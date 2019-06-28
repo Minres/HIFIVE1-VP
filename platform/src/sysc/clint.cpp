@@ -39,7 +39,7 @@
 namespace sysc {
 using namespace sc_core;
 
-const int lfclk_mutiplier = 1 << 12;
+const int lfclk_mutiplier = 1 ;//<< 12;
 
 clint::clint(sc_core::sc_module_name nm)
 : sc_core::sc_module(nm)
@@ -51,16 +51,21 @@ clint::clint(sc_core::sc_module_name nm)
 , NAMED(msip_int_o)
 , NAMEDD(regs, clint_regs)
 , cnt_fraction(0) {
+    SC_HAS_PROCESS(clint);// NOLINT
+    mtime_i.bind(*this);
     regs->registerResources(*this);
     SC_METHOD(clock_cb);
     sensitive << tlclk_i << lfclk_i;
     SC_METHOD(reset_cb);
     sensitive << rst_i;
     dont_initialize();
+    SC_METHOD(mtime_evt_cb);
+    sensitive<<mtime_evt;
+    dont_initialize();
     regs->mtimecmp.set_write_cb([this](scc::sc_register<uint64_t> &reg, uint64_t data, sc_core::sc_time d) -> bool {
         if (!regs->in_reset()) {
             reg.put(data);
-            this->update_mtime();
+            this->update_mtime(true);
         }
         return true;
     });
@@ -76,9 +81,6 @@ clint::clint(sc_core::sc_module_name nm)
         msip_int_o.write(regs->r_msip.msip);
         return true;
     });
-    SC_METHOD(update_mtime);
-    sensitive << mtime_evt;
-    dont_initialize();
 }
 
 void clint::clock_cb() {
@@ -99,26 +101,52 @@ void clint::reset_cb() {
         regs->reset_stop();
 }
 
-void clint::update_mtime() {
+void clint::mtime_evt_cb() {
+    update_mtime();
+}
+
+void clint::update_mtime(bool force) {
     if (clk > SC_ZERO_TIME) {
         uint64_t elapsed_clks =
             (sc_time_stamp() - last_updt) / clk; // get the number of clock periods since last invocation
         last_updt += elapsed_clks * clk;         // increment the last_updt timestamp by the number of clocks
-        if (elapsed_clks) {                      // update mtime reg if we have more than 0 elapsed clk periods
+        if (force || elapsed_clks) {                      // update mtime reg if we have more than 0 elapsed clk periods
             regs->r_mtime += elapsed_clks;
-            mtime_evt.cancel();
+            //mtime_evt.cancel();
             if (regs->r_mtimecmp > 0)
                 if (regs->r_mtimecmp > regs->r_mtime && clk > sc_core::SC_ZERO_TIME) {
                     sc_core::sc_time next_trigger =
-                        (clk * lfclk_mutiplier) * (regs->r_mtimecmp - regs->mtime) - cnt_fraction * clk;
+                        (clk * lfclk_mutiplier) * (regs->r_mtimecmp - regs->r_mtime) - cnt_fraction * clk;
                     SCTRACE() << "Timer fires at " << sc_time_stamp() + next_trigger;
                     mtime_evt.notify(next_trigger);
                     mtime_int_o.write(false);
-                } else
+                } else {
+                    SCTRACE() << "Timer fired at " << sc_time_stamp();
                     mtime_int_o.write(true);
+                }
         }
     } else
         last_updt = sc_time_stamp();
 }
 
+uint64_t clint::peek(tlm::tlm_tag<uint64_t>* t) const {
+    const_cast<clint*>(this)->update_mtime();
+    return regs->r_mtime;
+}
+
+bool clint::nb_peek(uint64_t& t) const {
+    const_cast<clint*>(this)->update_mtime();
+    t= regs->r_mtime;
+    return true;
+}
+
+bool clint::nb_can_peek(tlm::tlm_tag<uint64_t>* t) const {
+    return true;
+}
+
+const sc_core::sc_event& clint::ok_to_peek(tlm::tlm_tag<uint64_t>* t) const {
+    return dummy_evt;
+}
+
 } /* namespace sysc */
+
