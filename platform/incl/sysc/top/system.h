@@ -30,8 +30,8 @@
  *
  *******************************************************************************/
 
-#ifndef __SYSC_GENERAL_SYSTEM_H_
-#define __SYSC_GENERAL_SYSTEM_H_
+#ifndef __SYSC_TOP_SYSTEM_H_
+#define __SYSC_TOP_SYSTEM_H_
 
 #include "dcmotor.h"
 #include "h_bridge.h"
@@ -59,4 +59,4 @@ private:
     void gen_por();
 };
 }
-#endif /* __SYSC_GENERAL_SYSTEM_H_ */
+#endif /* __SYSC_TOP_SYSTEM_H_ */
