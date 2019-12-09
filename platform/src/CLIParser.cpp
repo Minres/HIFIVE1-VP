@@ -42,11 +42,6 @@ using namespace sc_core;
 CLIParser::CLIParser(int argc, char *argv[])
 : desc("Options")
 , valid(false) {
-    scc::init_logging();
-    LOGGER(DEFAULT)::reporting_level() = logging::WARNING;
-    LOGGER(connection)::reporting_level() = logging::WARNING;
-    LOGGER(SystemC)::reporting_level() = logging::WARNING;
-
     build();
     try {
         // Variant 1: no non-options
@@ -80,31 +75,28 @@ CLIParser::CLIParser(int argc, char *argv[])
         std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
         std::cerr << desc << std::endl;
     }
-    if (vm_.count("verbose")) {                          // NONE, FATAL, ERROR, WARNING, INFO, DEBUG, TRACE
-        const std::array<int, 8> verbosity = {SC_NONE,   // Logging::NONE
-                                              SC_LOW,    // Logging::FATAL
-                                              SC_LOW,    // Logging::ERROR
-                                              SC_LOW,    // Logging::WARNING
-                                              SC_MEDIUM, // Logging::INFO
-                                              SC_HIGH,   // logging::DEBUG
-                                              SC_FULL,   // logging::TRACE
-                                              SC_DEBUG}; // logging::TRACE+1
-        auto log_level = vm_["verbose"].as<int>();
-        auto l = logging::as_log_level(log_level > 6 ? 6 : log_level);
-        LOGGER(DEFAULT)::reporting_level() = l;
-        LOGGER(DEFAULT)::print_time() = false;
-        LOGGER(connection)::reporting_level() = l;
-        LOGGER(connection)::print_time() = false;
-        LOGGER(SystemC)::reporting_level() = l;
-        LOGGER(SystemC)::print_time() = false;
-        sc_report_handler::set_verbosity_level(verbosity[log_level]);
-    }
+    auto log_level = vm_["verbose"].as<int>();
+    auto verbosity       = !vm_["Verbose"].defaulted()?vm_["Verbose"].as<unsigned>():vm_["verbose"].as<unsigned>();
+    auto colored_output  = vm_["Verbose"].defaulted();
+    auto dbg_level       = std::min<unsigned>(logging::DBGTRACE, verbosity);
+
+    auto l = logging::as_log_level(log_level > 6 ? 6 : log_level);
+    auto log_regex       = vm_["log-filter"].as<std::string>();
+
     if (vm_.count("log-file")) {
-        // configure the connection logger
-        auto f = fopen(vm_["log-file"].as<std::string>().c_str(), "w");
-        LOG_OUTPUT(DEFAULT)::stream() = f;
-        LOG_OUTPUT(connection)::stream() = f;
-        LOG_OUTPUT(SystemC)::stream() = f;
+        auto log_file_name   = vm_["log-file"].as<std::string>();
+        scc::init_logging(scc::LogConfig()
+        .logFileName(log_file_name)
+        .logLevel(static_cast<logging::log_level>(dbg_level))
+        .logFilterRegex(log_regex)
+        .coloredOutput(colored_output)
+        );
+    } else {
+        scc::init_logging(scc::LogConfig()
+        .logLevel(static_cast<logging::log_level>(dbg_level))
+        .logFilterRegex(log_regex)
+        .coloredOutput(colored_output)
+        );
     }
 }
 
@@ -113,7 +105,9 @@ void CLIParser::build() {
     desc.add_options()
             ("help,h", "Print help message")
             ("verbose,v", po::value<int>()->implicit_value(3), "Sets logging verbosity")
+            ("Verbose,V", po::value<unsigned>()->default_value(logging::INFO), "Debug output level as with --verbose but print non-colored")
             ("log-file", po::value<std::string>(), "Sets default log file.")
+            ("log-filter", po::value<std::string>()->default_value(""), "log filter regular expression name")
             ("disass,d", po::value<std::string>()->implicit_value(""), "Enables disassembly")
             ("elf,l", po::value<std::string>(), "ELF file to load")
             ("gdb-port,g", po::value<unsigned short>()->default_value(0), "enable gdb server and specify port to use")
