@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.3)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake)
 
+project(RISCV-VP LANGUAGES CXX)
+
 set(ENABLE_SCV TRUE CACHE BOOL "Enable use of SCV")
 set(ENABLE_SHARED TRUE CACHE BOOL "Build shared libraries")
 

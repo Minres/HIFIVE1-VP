@@ -30,8 +30,8 @@
  *
  *******************************************************************************/
 
-#ifndef _SIFIVE_HIFIVE1_H_
-#define _SIFIVE_HIFIVE1_H_
+#ifndef _SYSC_TOP_HIFIVE1_H_
+#define _SYSC_TOP_HIFIVE1_H_
 
 #include <sysc/top/terminal.h>
 #include <sysc/top/mcp_adc.h>
@@ -65,4 +65,4 @@ protected:
 
 }
 
-#endif /* _SYSC_SIFIVE_HIFIVE1_H_ */
+#endif /* _SYSC_TOP_HIFIVE1_H_ */

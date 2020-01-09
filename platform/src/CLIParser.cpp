@@ -42,11 +42,6 @@ using namespace sc_core;
 CLIParser::CLIParser(int argc, char *argv[])
 : desc("Options")
 , valid(false) {
-    scc::init_logging();
-    LOGGER(DEFAULT)::reporting_level() = logging::WARNING;
-    LOGGER(connection)::reporting_level() = logging::WARNING;
-    LOGGER(SystemC)::reporting_level() = logging::WARNING;
-
     build();
     try {
         // Variant 1: no non-options
@@ -90,21 +85,7 @@ CLIParser::CLIParser(int argc, char *argv[])
                                               SC_FULL,   // logging::TRACE
                                               SC_DEBUG}; // logging::TRACE+1
         auto log_level = vm_["verbose"].as<int>();
-        auto l = logging::as_log_level(log_level > 6 ? 6 : log_level);
-        LOGGER(DEFAULT)::reporting_level() = l;
-        LOGGER(DEFAULT)::print_time() = false;
-        LOGGER(connection)::reporting_level() = l;
-        LOGGER(connection)::print_time() = false;
-        LOGGER(SystemC)::reporting_level() = l;
-        LOGGER(SystemC)::print_time() = false;
-        sc_report_handler::set_verbosity_level(verbosity[log_level]);
-    }
-    if (vm_.count("log-file")) {
-        // configure the connection logger
-        auto f = fopen(vm_["log-file"].as<std::string>().c_str(), "w");
-        LOG_OUTPUT(DEFAULT)::stream() = f;
-        LOG_OUTPUT(connection)::stream() = f;
-        LOG_OUTPUT(SystemC)::stream() = f;
+        scc::init_logging(logging::as_log_level(log_level > 6 ? 6 : log_level));
     }
 }
 
