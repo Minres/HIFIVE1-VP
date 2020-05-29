@@ -75,7 +75,7 @@ CLIParser::CLIParser(int argc, char *argv[])
         std::cerr << "ERROR: " << e.what() << std::endl << std::endl;
         std::cerr << desc << std::endl;
     }
-    auto log_level = vm_["verbose"].as<int>();
+    auto log_level = vm_["verbose"].as<unsigned>();
     auto verbosity       = !vm_["Verbose"].defaulted()?vm_["Verbose"].as<unsigned>():vm_["verbose"].as<unsigned>();
     auto colored_output  = vm_["Verbose"].defaulted();
     auto dbg_level       = std::min<unsigned>(logging::DBGTRACE, verbosity);
@@ -104,7 +104,7 @@ void CLIParser::build() {
     // clang-format off
     desc.add_options()
             ("help,h", "Print help message")
-            ("verbose,v", po::value<int>()->implicit_value(3), "Sets logging verbosity")
+            ("verbose,v", po::value<unsigned>()->implicit_value(3), "Sets logging verbosity")
             ("Verbose,V", po::value<unsigned>()->default_value(logging::INFO), "Debug output level as with --verbose but print non-colored")
             ("log-file", po::value<std::string>(), "Sets default log file.")
             ("log-filter", po::value<std::string>()->default_value(""), "log filter regular expression name")

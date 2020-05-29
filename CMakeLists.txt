@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.12)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake)
 
 project(RISCV-VP LANGUAGES CXX)
@@ -9,12 +9,12 @@ set(ENABLE_SHARED TRUE CACHE BOOL "Build shared libraries")
 include(GitFunctions)
 get_branch_from_git()
 # if we are not on master or develop set the submodules to develop
-IF(NOT ${GIT_BRANCH} MATCHES "master") 
-	IF(NOT ${GIT_BRANCH} MATCHES "develop") 
-		message(STATUS "main branch is '${GIT_BRANCH}', setting submodules to 'develop'")
-		set(GIT_BRANCH develop)
-	endif()
-endif()
+#IF(NOT ${GIT_BRANCH} MATCHES "master") 
+#	IF(NOT ${GIT_BRANCH} MATCHES "develop") 
+#		message(STATUS "main branch is '${GIT_BRANCH}', setting submodules to 'develop'")
+#		set(GIT_BRANCH develop)
+#	endif()
+#endif()
 
 ### set the directory names of the submodules
 set(GIT_SUBMODULES elfio libGIS scc dbt-core)
@@ -29,7 +29,7 @@ set(GIT_SUBMODULE_BRANCH_dbt-core ${GIT_BRANCH})
 set(GIT_SUBMODULE_BRANCH_riscv ${GIT_BRANCH})
 
 include(GNUInstallDirs)
-include(Submodules)
+#include(Submodules)
 include(Conan)
 
 #enable_testing() 
@@ -58,7 +58,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(warnings "/W4 /WX /EHsc")
 endif()
 
-setup_conan()
+setup_conan(TARGETS)
 
 # This line finds the boost lib and headers. 
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
@@ -76,7 +76,7 @@ set(BUILD_SHARED_LIBS 1)
 find_package(Threads)
 find_package(Tcmalloc)
 find_package(ZLIB)
-find_package(SystemC)
+find_package(OSCISystemC)
 if(SystemC_FOUND)
         message(STATUS "SystemC headers at ${SystemC_INCLUDE_DIRS}")
         message(STATUS "SystemC library at ${SystemC_LIBRARY_DIRS}")
