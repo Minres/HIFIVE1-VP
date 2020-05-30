@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_CURRENT_SOURCE_DIR}/scc/cmake)
 
-project(RISCV-VP LANGUAGES CXX)
+project(RISCV-VP VERSION 1.0.0 LANGUAGES CXX)
 
 set(ENABLE_SCV TRUE CACHE BOOL "Enable use of SCV")
+
 set(ENABLE_SHARED TRUE CACHE BOOL "Build shared libraries")
+
+set(WITH_LLVM FALSE CACHE BOOL "Build LLVM based backend")
 
 include(GitFunctions)
 get_branch_from_git()
@@ -42,11 +45,11 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-march=native" COMPILER_SUPPORTS_MARCH_NATIVE)
 if(COMPILER_SUPPORTS_MARCH_NATIVE)
-if("${CMAKE_BUILD_TYPE}" STREQUAL "") 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-elseif(NOT(${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo"))
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
-endif()
+	if("${CMAKE_BUILD_TYPE}" STREQUAL "") 
+	    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+	elseif(NOT(${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo"))
+	    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+	endif()
 endif()
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -62,16 +65,6 @@ setup_conan(TARGETS)
 
 # This line finds the boost lib and headers. 
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
-
-if(DEFINED ENV{LLVM_HOME})
-	find_path (LLVM_DIR LLVM-Config.cmake $ENV{LLVM_HOME}/lib/cmake/llvm)
-endif(DEFINED ENV{LLVM_HOME})
-find_package(LLVM REQUIRED CONFIG)
-message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
-message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
-llvm_map_components_to_libnames(llvm_libs support core mcjit x86codegen x86asmparser)
-
-set(BUILD_SHARED_LIBS 1)
 
 find_package(Threads)
 find_package(Tcmalloc)
@@ -90,7 +83,6 @@ if(SystemC_FOUND)
         endif()
 endif(SystemC_FOUND)
 
-set(PROJECT_3PARTY_DIRS external)
 include(clang-format)
 
 set(ENABLE_CLANG_TIDY OFF CACHE BOOL "Add clang-tidy automatically to builds")
@@ -107,16 +99,8 @@ if (ENABLE_CLANG_TIDY)
     endif()
 endif()
   
-# Set the version number of your project here (format is MAJOR.MINOR.PATCHLEVEL - e.g. 1.0.0)
-set(VERSION_MAJOR "1")
-set(VERSION_MINOR "0")
-set(VERSION_PATCH "0")
-set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
-
 add_subdirectory(external)
 add_subdirectory(dbt-core)
 add_subdirectory(riscv)
 add_subdirectory(scc)
 add_subdirectory(platform)
-
-message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
