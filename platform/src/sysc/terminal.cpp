@@ -57,7 +57,7 @@ terminal::~terminal() = default;
 
 void terminal::before_end_of_elaboration() {
     if (write_to_ws.get_value()) {
-        SCTRACE() << "Adding WS handler for " << (std::string{"/ws/"} + name());
+        SCCTRACE() << "Adding WS handler for " << (std::string{"/ws/"} + name());
         handler = std::make_shared<WsHandler>();
         sc_comm_singleton::inst().registerWebSocketHandler((std::string{"/ws/"} + name()).c_str(), handler);
     }
@@ -80,7 +80,7 @@ void terminal::receive(tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, sc_core::sc_time
                     this->handler->send(os.str());
                 });
             else
-                SCINFO(this->name()) << " receive: '" << msg << "'";
+                SCCINFO(this->name()) << " receive: '" << msg << "'";
             queue.clear();
         }
     }

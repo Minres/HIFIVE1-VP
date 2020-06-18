@@ -111,7 +111,7 @@ void plic::global_int_port_cb() {
         if (enable && global_interrupts_i[i].read() == 1) {
             regs->r_pending[reg_idx] = regs->r_pending[reg_idx] | (0x1 << bit_ofs);
             handle_pending = true;
-            SCDEBUG(this->name()) << "pending interrupt identified: " << i;
+            SCCDEBUG(this->name()) << "pending interrupt identified: " << i;
         }
     }
 
@@ -138,7 +138,7 @@ void plic::handle_pending_int() {
                 claim_prio = prio;
                 claim_int = i;
                 raise_int = true;
-                SCDEBUG(this->name()) << "pending interrupt activated: " << i;
+                SCCDEBUG(this->name()) << "pending interrupt activated: " << i;
             }
         }
     }
@@ -149,14 +149,14 @@ void plic::handle_pending_int() {
         // todo: evluate clock period
     } else {
         regs->r_claim_complete = 0;
-        SCDEBUG(this->name()) << "no further pending interrupt.";
+        SCCDEBUG(this->name()) << "no further pending interrupt.";
     }
 }
 
 void plic::reset_pending_int(uint32_t irq) {
     // todo: evaluate enable register (see spec)
     // todo: make sure that pending is set, otherwise don't reset irq ... read spec.
-    SCTRACE(this->name()) << "reset pending interrupt: " << irq;
+    SCCTRACE(this->name()) << "reset pending interrupt: " << irq;
     // reset related pending bit
     auto reg_idx = irq >> 5;
     auto bit_ofs = irq & 0x1F;
