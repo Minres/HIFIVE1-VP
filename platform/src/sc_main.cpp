@@ -36,6 +36,7 @@
 
 #include <scc/configurable_tracer.h>
 #include <scc/configurer.h>
+#include <scc/perf_estimator.h>
 #include <scc/report.h>
 #include <scc/scv_tr_db.h>
 #include <scc/tracer.h>
@@ -50,6 +51,7 @@
 #include <fstream>
 #include <sstream>
 
+using namespace sc_core;
 using namespace sysc;
 namespace po = boost::program_options;
 
@@ -67,6 +69,8 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
     // CLI argument parsing & logging setup
     ///////////////////////////////////////////////////////////////////////////
+    scc::stream_redirection cout_redir(std::cout, scc::log::INFO);
+    scc::stream_redirection cerr_redir(std::cerr, scc::log::ERROR);
     CLIParser parser(argc, argv);
     if (!parser.is_valid()) return ERROR_IN_COMMAND_LINE;
     ///////////////////////////////////////////////////////////////////////////
@@ -90,6 +94,7 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
     // instantiate top level
     ///////////////////////////////////////////////////////////////////////////
+    auto estimator = scc::make_unique<scc::perf_estimator>(parser.is_set("heart-beat") ? 10_us : SC_ZERO_TIME);
     auto i_system = scc::make_unique<sysc::system>("i_system");
     ///////////////////////////////////////////////////////////////////////////
     // add non-implemented 'enableTracing' properties
@@ -106,6 +111,7 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
     // overwrite config with command line settings
     ///////////////////////////////////////////////////////////////////////////
+    cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.backend", parser.get<std::string>("backend"));
 	cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.gdb_server_port", parser.get<unsigned short>("gdb-port"));
     cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.dump_ir", parser.is_set("dump-ir"));
     if (parser.is_set("elf"))
@@ -116,7 +122,7 @@ int sc_main(int argc, char *argv[]) {
             cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.elf_file", args[0]);
     }
     if (parser.is_set("quantum"))
-        tlm::tlm_global_quantum::instance().set(sc_core::sc_time(parser.get<unsigned>("quantum"), sc_core::SC_NS));
+        tlm::tlm_global_quantum::instance().set(sc_time(parser.get<unsigned>("quantum"), SC_NS));
     if (parser.is_set("reset")) {
         auto str = parser.get<std::string>("reset");
         uint64_t start_address = str.find("0x") == 0 ? std::stoull(str.substr(2), nullptr, 16) : std::stoull(str, nullptr, 10);
@@ -137,12 +143,22 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
     try {
         if (parser.is_set("max_time")) {
-            sc_core::sc_start(scc::parse_from_string(parser.get<std::string>("max_time")));
+            sc_start(scc::parse_from_string(parser.get<std::string>("max_time")));
         } else
-            sc_core::sc_start();
-        if (!sc_core::sc_end_of_simulation_invoked()) sc_core::sc_stop();
-    } catch (sc_core::sc_report &rep) {
-        sc_core::sc_report_handler::get_handler()(rep, sc_core::SC_DISPLAY | sc_core::SC_STOP);
+            sc_start();
+    } catch(sc_report& e) {
+        SCCERR() << "Caught sc_report exception during simulation: " << e.what() << ":" << e.get_msg();
+    } catch(std::exception& e) {
+        SCCERR() << "Caught exception during simulation: " << e.what();
+    } catch(...) {
+        SCCERR() << "Caught unspecified exception during simulation";
     }
-    return 0;
+    if(sc_is_running()) {
+        SCCERR() << "Simulation timeout!"; // calls sc_stop
+    }
+    auto errcnt = sc_report_handler::get_count(SC_ERROR);
+    auto warncnt = sc_report_handler::get_count(SC_WARNING);
+    SCCINFO() << "Finished, there were " << errcnt << " error" << (errcnt == 1 ? "" : "s") << " and " << warncnt << " warning"
+              << (warncnt == 1 ? "" : "s");
+    return errcnt + warncnt;
 }

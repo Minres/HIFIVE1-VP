@@ -88,23 +88,27 @@ CLIParser::CLIParser(int argc, char *argv[])
         auto log_file_name   = vm_["log-file"].as<std::string>();
         scc::init_logging(scc::LogConfig()
         .logFileName(log_file_name)
-        .logLevel(static_cast<scc::log>(dbg_level))
+        .logLevel(dbg_level)
         .logFilterRegex(log_regex)
         .coloredOutput(colored_output)
         );
     } else {
         scc::init_logging(scc::LogConfig()
-        .logLevel(static_cast<scc::log>(dbg_level))
+        .logLevel(dbg_level)
         .logFilterRegex(log_regex)
         .coloredOutput(colored_output)
         );
     }
+    LOGGER(DEFAULT)::reporting_level()=static_cast<logging::log_level>(dbg_level);
+    LOGGER(DEFAULT)::print_time()=false;
+    LOGGER(DEFAULT)::print_severity()=false;
+    LOG_OUTPUT(DEFAULT)::ostream() = &std::cout;
 }
 
 void CLIParser::build() {
     // clang-format off
     desc.add_options()
-            ("help,h", "Print help message")
+            ("help,h",        "Print help message")
             ("verbose,v",      po::value<unsigned>()->implicit_value(3), "Sets logging verbosity")
             ("Verbose,V",      po::value<unsigned>()->default_value(logging::INFO), "Debug output level as with --verbose but print non-colored")
             ("debug-level,D",  po::value<scc::log>(), "Debug output level (textual) as with --verbose")
@@ -113,13 +117,15 @@ void CLIParser::build() {
             ("disass,d",       po::value<std::string>()->implicit_value(""), "Enables disassembly")
             ("elf,l",          po::value<std::string>(), "ELF file to load")
             ("gdb-port,g",     po::value<unsigned short>()->default_value(0), "enable gdb server and specify port to use")
-            ("ir-dump", "dump the intermediate representation")
+            ("ir-dump",        "dump the intermediate representation")
             ("quantum",        po::value<unsigned>(), "SystemC quantum time in ns")
             ("reset,r",        po::value<std::string>(), "reset address")
             ("trace-level,t",  po::value<unsigned>()->default_value(0), "enable tracing, or combination of 1=signals and 2=TX text, 4=TX compressed text, 6=TX in SQLite")
             ("trace-default-on", "enables tracing for all unspecified modules")
             ("trace-file",     po::value<std::string>()->default_value("system"), "set th ename of the trace file")
             ("max_time,m",     po::value<std::string>(), "maximum time to run")
+            ("backend",        po::value<std::string>()->default_value("tcc"), "ISS engine to use")
+            ("heart-beat,b",   "Enable heartbeat printing")
             ("config-file,c",  po::value<std::string>()->default_value(""), "read configuration from file")
             ("dump-config,dc", po::value<std::string>()->default_value(""), "dump configuration to file file");
     // clang-format on
