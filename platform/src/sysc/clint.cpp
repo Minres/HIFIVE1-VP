@@ -117,11 +117,11 @@ void clint::update_mtime(bool force) {
                 if (regs->r_mtimecmp > regs->r_mtime && clk > sc_core::SC_ZERO_TIME) {
                     sc_core::sc_time next_trigger =
                         (clk * lfclk_mutiplier) * (regs->r_mtimecmp - regs->r_mtime) - cnt_fraction * clk;
-                    SCTRACE() << "Timer fires at " << sc_time_stamp() + next_trigger;
+                    SCCTRACE() << "Timer fires at " << sc_time_stamp() + next_trigger;
                     mtime_evt.notify(next_trigger);
                     mtime_int_o.write(false);
                 } else {
-                    SCTRACE() << "Timer fired at " << sc_time_stamp();
+                    SCCTRACE() << "Timer fired at " << sc_time_stamp();
                     mtime_int_o.write(true);
                 }
         }

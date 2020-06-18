@@ -16,16 +16,21 @@ RISCV-VP uses libGIS (https://github.com/vsergeev/libGIS) as well as ELFIO (http
 * you need to have a C++11 capable compiler (e.g. gcc >= 4.8), make, python, and cmake installed
 * install LLVM >= 4.0 according to http://apt.llvm.org/ (if it is not already provided by your distribution e.g by Ubuntu 18.04)
 * install conan.io (see also http://docs.conan.io/en/latest/installation.html):
+
 ```
     pip install conan
 ```
+
 * setup conan to use the minres repo:
+
 ```
     conan remote add minres https://api.bintray.com/conan/minres/conan-repo
     conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
 ```
+
 * checkout source from git
 * start an out-of-source build:
+
 ```
     cd RISCV-VP
     mkdir build
@@ -33,15 +38,18 @@ RISCV-VP uses libGIS (https://github.com/vsergeev/libGIS) as well as ELFIO (http
     cmake ..
     cmake --build .
 ```
+
 * if you encounter issues when linking wrt. c++11 symbols you might have run into GCC ABI incompatibility introduced from GCC 5.0 onwards. You can fix this by adding '-s compiler.libcxx=libstdc++11' to the conan call or changing compiler.libcxx to
+
 ```
 compiler.libcxx=libstdc++11
 ```
+
 in $HOME/.conan/profiles/default
 
-** Detailed Setup steps**
+**Detailed Setup steps**
 
-*** prepare Ubuntu 18.04 ***
+***prepare Ubuntu 18.04***
 
 ```
     sudo apt-get install -y git python-pip build-essential cmake libloki-dev zlib1g-dev libncurses5-dev \	
@@ -49,7 +57,7 @@ in $HOME/.conan/profiles/default
     pip install --user conan
 ```
 
-*** prepare Fedora 28 ***
+***prepare Fedora 28***
 
 ```
     #prepare system
@@ -59,7 +67,7 @@ in $HOME/.conan/profiles/default
     export PATH=${PATH}:$HOME/.local/bin
 ```
  
-*** Build the ISS ***
+***Build the ISS***
 
 ```
     # configure conan
@@ -67,9 +75,10 @@ in $HOME/.conan/profiles/default
     conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
     conan profile new default --detect
     # clone and build DBT-RISE-RISCV
-    git clone --recursive https://github.com/Minres/DBT-RISE-RISCV.git
-    cd DBT-RISE-RISCV/
+    git clone --recursive https://git.minres.com/VP/RISCV-VP.git
+    cd RISCV-VP/
     git checkout develop
+    git submodule update --recursive
     mkdir build;cd build
     MAKE_FLAGS="-j4" cmake ..
     make -j4

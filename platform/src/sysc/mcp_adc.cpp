@@ -86,7 +86,7 @@ void mcp_3008::do_conversion() {
             auto inp = ch_i[channel].read();
             auto norm = 1024.0 * inp / vref;
             auto res = static_cast<int>(norm);
-            SCDEBUG(this->name()) << "Converting " << inp << " to " << norm << " as int " << res;
+            SCCDEBUG(this->name()) << "Converting " << inp << " to " << norm << " as int " << res;
             tx_bytes[1] = bit_sub<8, 2>(res);
             tx_bytes[2] = bit_sub<0, 8>(res);
         } else {
@@ -176,7 +176,7 @@ void mcp_3208::do_conversion() {
             auto inp = ch_i[channel].read();
             auto norm = 4096.0 * inp / vref;
             auto res = static_cast<int>(norm);
-            SCDEBUG(this->name()) << "Converting channel " << channel << " " << inp << "V to " << norm << " as int "
+            SCCDEBUG(this->name()) << "Converting channel " << channel << " " << inp << "V to " << norm << " as int "
                                   << res;
             tx_bytes[1] = bit_sub<8, 4>(res);
             tx_bytes[2] = bit_sub<0, 8>(res);

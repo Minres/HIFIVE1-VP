@@ -111,7 +111,7 @@ gpio::~gpio() = default;
 
 void gpio::before_end_of_elaboration() {
     if (write_to_ws.get_value()) {
-        SCTRACE() << "Adding WS handler for " << (std::string{"/ws/"} + name());
+        SCCTRACE() << "Adding WS handler for " << (std::string{"/ws/"} + name());
         handler = std::make_shared<WsHandler>();
         sc_comm_singleton::inst().registerWebSocketHandler((std::string{"/ws/"} + name()).c_str(), handler);
     }
