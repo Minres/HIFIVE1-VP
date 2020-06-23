@@ -46,8 +46,8 @@ void build_hifive_without_scv() {
     try {
         sh("conan profile new default --detect --force")
 		sh("conan profile update settings.compiler.libcxx=libstdc++11 default")
-		sh("conan remote add minres https://api.bintray.com/conan/minres/conan-repo")
-		sh("conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan")
+		sh("conan remote add minres https://api.bintray.com/conan/minres/conan-repo --force")
+		sh("conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan --force")
         }
     catch (exc) {
             echo 'Conan configured'
@@ -72,7 +72,7 @@ pipeline {
     stages {
         stage('HiFive-VP pipeline') {
    		parallel {
-			stage('ubuntu/18.04'){
+			stage('ubuntu'){
 				agent {docker { image 'ubuntu-18.04' } }
 				stages {
 					stage('Checkout on Ubuntu') {
@@ -87,7 +87,7 @@ pipeline {
 					}
 				}
 			}
-			stage('Fedora/28'){
+			stage('Fedora28'){
 				agent {docker { image 'fedora28' } }
 				stages {
 					stage('Checkout on Fedora') {
@@ -102,7 +102,7 @@ pipeline {
 					}
 				}
 			}
-			stage('Build without SCV'){
+			stage('No SCV'){
 				agent {docker { image 'ubuntu-18.04' } }
 				stages {
 					stage('Checkout on Ubuntu') {
