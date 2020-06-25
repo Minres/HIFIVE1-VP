@@ -68,6 +68,7 @@ CLIParser::CLIParser(int argc, char *argv[])
         // --help option
         if (vm_.count("help")) {
             std::cout << "DBT-RISE-RiscV simulator for RISC-V" << std::endl << desc << std::endl;
+            exit(0);
         }
         po::notify(vm_); // throws on error, so do after help in case there are any problems
         valid = true;
@@ -76,7 +77,7 @@ CLIParser::CLIParser(int argc, char *argv[])
         std::cerr << desc << std::endl;
     }
 
-    auto verbosity = !vm_["Verbose"].defaulted() ? vm_["Verbose"].as<unsigned>() : vm_["verbose"].as<unsigned>();
+    auto verbosity = !vm_["Verbose"].defaulted() ? vm_["Verbose"].as<unsigned>() : vm_.count("verbose") ? vm_["verbose"].as<unsigned>() : 3;
     auto colored_output = vm_["Verbose"].defaulted();
     auto dbg_level = vm_.count("debug-level")
                          ? vm_["debug-level"].as<scc::log>()
@@ -109,7 +110,7 @@ void CLIParser::build() {
     // clang-format off
     desc.add_options()
             ("help,h",        "Print help message")
-            ("verbose,v",      po::value<unsigned>()->implicit_value(3), "Sets logging verbosity")
+            ("verbose,v",      po::value<unsigned>()->implicit_value(4), "Sets logging verbosity")
             ("Verbose,V",      po::value<unsigned>()->default_value(logging::INFO), "Debug output level as with --verbose but print non-colored")
             ("debug-level,D",  po::value<scc::log>(), "Debug output level (textual) as with --verbose")
             ("log-file",       po::value<std::string>(), "Sets default log file.")

@@ -69,9 +69,9 @@ int sc_main(int argc, char *argv[]) {
     ///////////////////////////////////////////////////////////////////////////
     // CLI argument parsing & logging setup
     ///////////////////////////////////////////////////////////////////////////
+    CLIParser parser(argc, argv);
     scc::stream_redirection cout_redir(std::cout, scc::log::INFO);
     scc::stream_redirection cerr_redir(std::cerr, scc::log::ERROR);
-    CLIParser parser(argc, argv);
     if (!parser.is_valid()) return ERROR_IN_COMMAND_LINE;
     ///////////////////////////////////////////////////////////////////////////
     // set up infrastructure
@@ -116,7 +116,7 @@ int sc_main(int argc, char *argv[]) {
     cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.dump_ir", parser.is_set("dump-ir"));
     if (parser.is_set("elf"))
         cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.elf_file", parser.get<std::string>("elf"));
-    else {
+    else if (parser.is_set("argv")){
         auto args = parser.get<std::vector<std::string>>("argv");
         if(args.size())
             cfg.set_value("i_system.i_hifive1.i_fe310.i_core_complex.elf_file", args[0]);
