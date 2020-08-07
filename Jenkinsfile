@@ -72,48 +72,32 @@ pipeline {
     stages {
         stage('HiFive-VP pipeline') {
    		parallel {
-			stage('ubuntu'){
+			stage('ubuntu18'){
 				agent {docker { image 'ubuntu-18.04' } }
 				stages {
-					stage('Checkout on Ubuntu') {
-						steps {
-							checkout_hifive_vp()
-						}
-					}
-					stage('Build on Ubuntu') {
-						steps {
-							build_hifive_vp()
-						}
-					}
+					stage('Checkout on Ubuntu18.04') { steps {	checkout_hifive_vp() }}
+					stage('Build') { steps {	build_hifive_vp() }	}
+				}
+			}
+			stage('ubuntu20'){
+				agent {docker { image 'ubuntu-20.04' } }
+				stages {
+					stage('Checkout on Ubuntu20.04') { steps {	checkout_hifive_vp() }}
+					stage('Build') { steps {	build_hifive_vp() }	}
 				}
 			}
 			stage('Fedora28'){
 				agent {docker { image 'fedora28' } }
 				stages {
-					stage('Checkout on Fedora') {
-						steps {
-							checkout_hifive_vp()
-						}
-					}
-					stage('Build on Fedora') {
-						steps {
-							build_hifive_vp()
-						}
-					}
+					stage('Checkout on Fedora') { steps {checkout_hifive_vp()}}
+					stage('Build') { steps {build_hifive_vp()	}}
 				}
 			}
 			stage('No SCV'){
 				agent {docker { image 'ubuntu-18.04' } }
 				stages {
-					stage('Checkout on Ubuntu') {
-						steps {
-							checkout_hifive_vp()
-						}
-					}
-					stage('Build without SCV') {
-						steps {
-							build_hifive_without_scv()
-						}
+					stage('Checkout on Ubuntu') { steps {checkout_hifive_vp()}}
+					stage('Build without SCV') { steps {build_hifive_without_scv()}
 					}
 				}
 			}
