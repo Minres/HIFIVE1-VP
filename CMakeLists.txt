@@ -65,6 +65,7 @@ setup_conan(TARGETS)
 
 # This line finds the boost lib and headers. 
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.
+set(BOOST_ROOT ${CONAN_BOOST_ROOT})
 
 find_package(Threads)
 find_package(Tcmalloc)
