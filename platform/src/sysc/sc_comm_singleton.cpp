@@ -62,7 +62,7 @@ inline void die() {
 
 sc_comm_singleton::sc_comm_singleton(sc_core::sc_module_name nm)
 : sc_core::sc_module(nm)
-, m_serv(new Server(std::make_shared<PrintfLogger>(Logger::Level::WARNING)))
+, m_serv(new Server(std::make_shared<PrintfLogger>(Logger::Level::Warning)))
 , needs_client(false)
 , client_started(false) {
     m_serv->addPageHandler(std::make_shared<DefaultPageHandler>(*this));
