@@ -1,7 +1,7 @@
 [requires]
     gsl_microsoft/20180102@bincrafters/stable
     fmt/6.1.2
-    Seasocks/1.4.4@minres/stable
+    seasocks/1.4.4
     SystemC/2.3.3@minres/stable
     SystemCVerification/2.0.1@minres/stable
     SystemC-CCI/1.0.0@minres/stable
@@ -14,7 +14,7 @@
     cmake
 
 [options]
-    Seasocks:shared=True
+    seasocks:shared=True
     boost:fPIC=True
     boost:shared=False
     boost:header_only=False

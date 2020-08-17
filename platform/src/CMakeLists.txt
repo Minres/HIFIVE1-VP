@@ -31,7 +31,7 @@ set(LIB_SOURCES
 
 add_library(platform ${LIB_SOURCES})
 target_include_directories(platform PUBLIC ../incl)
-target_link_libraries(platform PUBLIC riscv_sc CONAN_PKG::Seasocks external)
+target_link_libraries(platform PUBLIC riscv_sc CONAN_PKG::seasocks external)
 set_target_properties(platform PROPERTIES
   VERSION ${PROJECT_VERSION}  # ${VERSION} was defined in the main CMakeLists.
   FRAMEWORK FALSE
