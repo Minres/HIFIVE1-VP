@@ -89,21 +89,27 @@ BOOST_PP_REPEAT(8, PORT_NAMING, _)
     // proxy callbacks
     h_bridge[0].register_nb_transport([this](tlm::tlm_signal_gp<sc_logic> &gp, tlm::tlm_phase &phase, sc_time &delay) -> tlm::tlm_sync_enum {
         ha_o.write(gp.get_value());
+        return tlm::TLM_ACCEPTED;
     });
     h_bridge[1].register_nb_transport([this](tlm::tlm_signal_gp<sc_logic> &gp, tlm::tlm_phase &phase, sc_time &delay) -> tlm::tlm_sync_enum {
         la_o.write(gp.get_value());
+        return tlm::TLM_ACCEPTED;
     });
     h_bridge[2].register_nb_transport([this](tlm::tlm_signal_gp<sc_logic> &gp, tlm::tlm_phase &phase, sc_time &delay) -> tlm::tlm_sync_enum {
         hb_o.write(gp.get_value());
+        return tlm::TLM_ACCEPTED;
     });
     h_bridge[3].register_nb_transport([this](tlm::tlm_signal_gp<sc_logic> &gp, tlm::tlm_phase &phase, sc_time &delay) -> tlm::tlm_sync_enum {
         lb_o.write(gp.get_value());
+        return tlm::TLM_ACCEPTED;
     });
     h_bridge[4].register_nb_transport([this](tlm::tlm_signal_gp<sc_logic> &gp, tlm::tlm_phase &phase, sc_time &delay) -> tlm::tlm_sync_enum {
         hc_o.write(gp.get_value());
+        return tlm::TLM_ACCEPTED;
     });
     h_bridge[5].register_nb_transport([this](tlm::tlm_signal_gp<sc_logic> &gp, tlm::tlm_phase &phase, sc_time &delay) -> tlm::tlm_sync_enum {
         lc_o.write(gp.get_value());
+        return tlm::TLM_ACCEPTED;
     });
 
 

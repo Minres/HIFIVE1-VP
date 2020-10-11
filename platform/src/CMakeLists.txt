@@ -29,9 +29,24 @@ set(LIB_SOURCES
 	sysc/uart.cpp	
 	CLIParser.cpp )
 
+if(VERILATOR_FOUND)
+        set(LIB_SOURCES ${LIB_SOURCES}
+        	rtl/spi_rtl.cpp
+			rtl/tl_uh_bfm.cpp
+			rtl/VTLSPI__Syms.cpp
+			rtl/VTLSPI.cpp
+        )
+        set_source_files_properties(beh/fe310.cpp PROPERTIES COMPILE_DEFINITIONS "HAS_VERILATOR")
+endif()
+
 add_library(platform ${LIB_SOURCES})
 target_include_directories(platform PUBLIC ../incl)
 target_link_libraries(platform PUBLIC riscv_sc CONAN_PKG::seasocks external)
+if(VERILATOR_FOUND)
+	message(STATUS "Verilator found at ${VERILATOR_EXECUTABLE}")
+    target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/incl/sysc/rtl)	
+	target_include_directories(platform SYSTEM PRIVATE ${VERILATOR_INCLUDE_DIR})
+endif()
 set_target_properties(platform PROPERTIES
   VERSION ${PROJECT_VERSION}  # ${VERSION} was defined in the main CMakeLists.
   FRAMEWORK FALSE
@@ -42,6 +57,12 @@ add_executable(riscv-vp sc_main.cpp)
 # include files for this application
 target_include_directories(riscv-vp SYSTEM PRIVATE ${LLVM_INCLUDE_DIRS})
 target_link_libraries(riscv-vp PUBLIC platform riscv_sc)
+if(VERILATOR_FOUND)
+	set_source_files_properties(sc_main.cpp PROPERTIES COMPILE_DEFINITIONS HAS_VERILATOR)
+	target_include_directories(riscv-vp SYSTEM PRIVATE ${VERILATOR_INCLUDE_DIR})
+	target_link_libraries(riscv-vp verilated)
+endif()
+
 if (Tcmalloc_FOUND)
     target_link_libraries(riscv-vp PUBLIC ${Tcmalloc_LIBRARIES})
 endif(Tcmalloc_FOUND)

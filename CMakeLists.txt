@@ -84,6 +84,14 @@ if(SystemC_FOUND)
         endif()
 endif(SystemC_FOUND)
 
+#find_package(Verilator)
+if(VERILATOR_FOUND)
+	message(STATUS "Verilator found at ${VERILATOR_EXECUTABLE}")
+else()
+	message(STATUS "Verilator not found, omitting RTL parts in build")
+endif()
+
+set(PROJECT_3PARTY_DIRS external)
 include(clang-format)
 
 set(ENABLE_CLANG_TIDY OFF CACHE BOOL "Add clang-tidy automatically to builds")

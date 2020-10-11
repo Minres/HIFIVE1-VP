@@ -50,6 +50,15 @@
 #endif
 #include <fstream>
 #include <sstream>
+#ifdef HAS_VERILATOR
+#include <verilated.h>
+inline void configure_verilator() {
+    Verilated::commandArgs(sc_core::sc_argc(), const_cast<char **>(sc_core::sc_argv()));
+}
+#else
+inline void configure_verilator() {}
+#endif
+const std::string core_path{"i_system.i_hifive1.i_fe310.i_core_complex"};
 
 using namespace sc_core;
 using namespace sysc;
@@ -66,6 +75,10 @@ int sc_main(int argc, char *argv[]) {
     // SystemC >=2.2 got picky about multiple drivers so disable check
     ///////////////////////////////////////////////////////////////////////////
     sc_report_handler::set_actions(SC_ID_MORE_THAN_ONE_SIGNAL_DRIVER_, SC_DO_NOTHING);
+    ///////////////////////////////////////////////////////////////////////////
+    // Setup verilator infrastructure (if used)
+    ///////////////////////////////////////////////////////////////////////////
+    configure_verilator();
     ///////////////////////////////////////////////////////////////////////////
     // CLI argument parsing & logging setup
     ///////////////////////////////////////////////////////////////////////////
