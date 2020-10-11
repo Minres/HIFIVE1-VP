@@ -28,11 +28,11 @@
     <stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN_SYMBOL" value="main"/>
     <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_ARGUMENTS" value="-v4&#10;${project_loc:dhrystone}/dhrystone"/>
     <stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="build/Release/riscv/bin/riscv-sim"/>
-    <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="RISCV-VP"/>
+    <stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="HiFive1-VP"/>
     <booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="false"/>
     <stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="cdt.managedbuild.config.gnu.exe.release.1745230171"/>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/RISCV-VP"/>
+        <listEntry value="/HiFive1-VP"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="4"/>
