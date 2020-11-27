@@ -24,19 +24,10 @@ RISCV-VP uses libGIS (https://github.com/vsergeev/libGIS) as well as ELFIO (http
 * setup conan to use the minres repo:
 
 ```
+    conan profile new default --detect --force
+    conan profile update settings.compiler.libcxx=libstdc++11 default
     conan remote add minres https://api.bintray.com/conan/minres/conan-repo
     conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
-```
-
-* checkout source from git
-* start an out-of-source build:
-
-```
-    cd RISCV-VP
-    mkdir build
-    cd build
-    cmake ..
-    cmake --build .
 ```
 
 * if you encounter issues when linking wrt. c++11 symbols you might have run into GCC ABI incompatibility introduced from GCC 5.0 onwards. You can fix this by adding '-s compiler.libcxx=libstdc++11' to the conan call or changing compiler.libcxx to
@@ -49,12 +40,12 @@ in $HOME/.conan/profiles/default
 
 **Detailed Setup steps**
 
-***prepare Ubuntu 18.04***
+***prepare Ubuntu 18.04/20.04***
 
 ```
-    sudo apt-get install -y git python-pip build-essential cmake libloki-dev zlib1g-dev libncurses5-dev \	
+    sudo apt-get install -y git python3-pip build-essential cmake libloki-dev zlib1g-dev libncurses5-dev \	
         libboost-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev llvm-dev llvm-doc
-    pip install --user conan
+    pip3 install --user conan
 ```
 
 ***prepare Fedora 28***
@@ -70,15 +61,11 @@ in $HOME/.conan/profiles/default
 ***Build the ISS***
 
 ```
-    # configure conan
-    conan remote add minres https://api.bintray.com/conan/minres/conan-repo
-    conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
-    conan profile new default --detect
-    # clone and build DBT-RISE-RISCV
-    git clone --recursive https://git.minres.com/VP/RISCV-VP.git
-    cd RISCV-VP/
-    git checkout develop
-    git submodule update --recursive
+    # checkout source from git: 
+    git clone --recursive https://git.minres.com/VP/HIFIVE1-VP.git
+
+    # build ISS:
+    cd HIFIVE1-VP
     mkdir build;cd build
     MAKE_FLAGS="-j4" cmake ..
     make -j4
