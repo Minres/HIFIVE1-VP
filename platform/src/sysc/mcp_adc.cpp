@@ -40,16 +40,16 @@ namespace sysc {
 mcp_3008::mcp_3008(sc_core::sc_module_name nm)
 : sysc::mcp_adc(nm, 8)
 , last_tx_start(sc_core::SC_ZERO_TIME) {
-    sck_i.register_nb_transport([this](tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
+    sck_i.register_nb_transport([this](tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
                                        sc_core::sc_time &delay) -> tlm::tlm_sync_enum { return tlm::TLM_COMPLETED; });
 
-    mosi_i.register_nb_transport([this](tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
+    mosi_i.register_nb_transport([this](tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
                                         sc_core::sc_time &delay) -> tlm::tlm_sync_enum {
         if (cs_v == sc_dt::Log_0) return receive(gp, phase, delay);
         return tlm::TLM_COMPLETED;
     });
 
-    cs_i.register_nb_transport([this](tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
+    cs_i.register_nb_transport([this](tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
                                       sc_core::sc_time &delay) -> tlm::tlm_sync_enum {
         if (cs_v != sc_dt::Log_0 && gp.get_value() == sc_dt::Log_0) {
             idx = 0; // falling edge
@@ -60,7 +60,7 @@ mcp_3008::mcp_3008(sc_core::sc_module_name nm)
     });
 }
 
-tlm::tlm_sync_enum mcp_3008::receive(tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
+tlm::tlm_sync_enum mcp_3008::receive(tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
                                      sc_core::sc_time &delay) {
     gp.get_extension(ext);
     if (ext) {
@@ -100,7 +100,7 @@ mcp_3208::mcp_3208(sc_core::sc_module_name nm)
 : sysc::mcp_adc(nm, 8)
 , ext(nullptr)
 , last_tx_start(sc_core::SC_ZERO_TIME) {
-    sck_i.register_nb_transport([this](tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
+    sck_i.register_nb_transport([this](tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
                                        sc_core::sc_time &delay) -> tlm::tlm_sync_enum {
         auto ret = tlm::TLM_COMPLETED;
         if (cs_v == sc_dt::Log_0) ret = receive(gp, phase, delay);
@@ -108,13 +108,13 @@ mcp_3208::mcp_3208(sc_core::sc_module_name nm)
         return ret;
     });
 
-    mosi_i.register_nb_transport([this](tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
+    mosi_i.register_nb_transport([this](tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
                                         sc_core::sc_time &delay) -> tlm::tlm_sync_enum {
         mosi_v = gp.get_value();
         return tlm::TLM_COMPLETED;
     });
 
-    cs_i.register_nb_transport([this](tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
+    cs_i.register_nb_transport([this](tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
                                       sc_core::sc_time &delay) -> tlm::tlm_sync_enum {
         if (cs_v != sc_dt::Log_0 && gp.get_value() == sc_dt::Log_0) { // falling edge of CS
             idx = 0;
@@ -128,7 +128,7 @@ mcp_3208::mcp_3208(sc_core::sc_module_name nm)
     sensitive << clk_sample_evt;
 }
 
-tlm::tlm_sync_enum mcp_3208::receive(tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
+tlm::tlm_sync_enum mcp_3208::receive(tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
                                      sc_core::sc_time &delay) {
     gp.get_extension(ext);
     if (ext) {

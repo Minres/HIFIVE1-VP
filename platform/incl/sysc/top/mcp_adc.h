@@ -34,12 +34,12 @@
 #define _SYSC_TOP_MCP3008_H_
 
 #include "cci_configuration"
-#include "scc/signal_initiator_mixin.h"
-#include "scc/signal_target_mixin.h"
+#include "tlm/scc/signal_initiator_mixin.h"
+#include "tlm/scc/signal_target_mixin.h"
 #include "sysc/tlm_extensions.h"
 #include <sysc/kernel/sc_module.h>
 #include <sysc/utils/sc_vector.h>
-#include <tlm/tlm_signal.h>
+#include <tlm/scc/tlm_signal.h>
 
 namespace sysc {
 
@@ -49,10 +49,10 @@ public:
     template <typename TYPE>
     static std::unique_ptr<mcp_adc> create(sc_core::sc_module_name nm);
 
-    scc::tlm_signal_logic_in sck_i;
-    scc::tlm_signal_logic_out miso_o;
-    scc::tlm_signal_logic_in mosi_i;
-    scc::tlm_signal_logic_in cs_i;
+    tlm::scc::tlm_signal_logic_in sck_i;
+    tlm::scc::tlm_signal_logic_out miso_o;
+    tlm::scc::tlm_signal_logic_in mosi_i;
+    tlm::scc::tlm_signal_logic_in cs_i;
 
     sc_core::sc_in<double> vref_i;
     sc_core::sc_vector<sc_core::sc_in<double>> ch_i;
@@ -86,7 +86,7 @@ public:
     ~mcp_3008() override = default;
 
 private:
-    tlm::tlm_sync_enum receive(tlm::tlm_signal_gp<sc_dt::sc_logic> &, tlm::tlm_phase &, sc_core::sc_time &);
+    tlm::tlm_sync_enum receive(tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &, tlm::tlm_phase &, sc_core::sc_time &);
     void do_conversion();
     unsigned idx, rx_bits;
     std::array<uint8_t, 3> rx_bytes, tx_bytes;
@@ -103,7 +103,7 @@ public:
     ~mcp_3208() override = default;
 
 private:
-    tlm::tlm_sync_enum receive(tlm::tlm_signal_gp<sc_dt::sc_logic> &, tlm::tlm_phase &, sc_core::sc_time &);
+    tlm::tlm_sync_enum receive(tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &, tlm::tlm_phase &, sc_core::sc_time &);
     void sample_inputs();
     void do_conversion();
     unsigned idx, rx_bits, byte_offs, bit_offs;

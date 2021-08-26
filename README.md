@@ -26,8 +26,7 @@ RISCV-VP uses libGIS (https://github.com/vsergeev/libGIS) as well as ELFIO (http
 ```
     conan profile new default --detect --force
     conan profile update settings.compiler.libcxx=libstdc++11 default
-    conan remote add minres https://api.bintray.com/conan/minres/conan-repo
-    conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+    conan remote add minres https://artifactory.minres.com/artifactory/api/conan/oss"
 ```
 
 * if you encounter issues when linking wrt. c++11 symbols you might have run into GCC ABI incompatibility introduced from GCC 5.0 onwards. You can fix this by adding '-s compiler.libcxx=libstdc++11' to the conan call or changing compiler.libcxx to

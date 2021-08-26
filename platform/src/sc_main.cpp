@@ -38,7 +38,7 @@
 #include <scc/configurer.h>
 #include <scc/perf_estimator.h>
 #include <scc/report.h>
-#include <scc/scv_tr_db.h>
+#include <scc/scv/scv_tr_db.h>
 #include <scc/tracer.h>
 #include <scc/perf_estimator.h>
 

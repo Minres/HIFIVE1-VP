@@ -35,7 +35,7 @@
 
 #include <sysc/top/terminal.h>
 #include <sysc/top/mcp_adc.h>
-#include "tlm/tlm_signal_sockets.h"
+#include "tlm/scc/tlm_signal_sockets.h"
 #include <boost/preprocessor.hpp>
 #include <systemc>
 #include <sysc/SiFive/fe310.h>
@@ -56,8 +56,8 @@ struct hifive1 : public sc_core::sc_module {
     hifive1(sc_core::sc_module_name nm);
 
 protected:
-    sc_core::sc_vector<tlm::tlm_signal<sc_dt::sc_logic>> s_gpio;
-    sc_core::sc_vector<scc::tlm_signal_logic_in> h_bridge;
+    sc_core::sc_vector<tlm::scc::tlm_signal<sc_dt::sc_logic>> s_gpio;
+    sc_core::sc_vector<tlm::scc::tlm_signal_logic_in> h_bridge;
     fe310 i_fe310;
     terminal i_terminal;
     mcp_3208 i_adc;

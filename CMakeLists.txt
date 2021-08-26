@@ -9,28 +9,6 @@ set(ENABLE_SHARED TRUE CACHE BOOL "Build shared libraries")
 
 set(WITH_LLVM FALSE CACHE BOOL "Build LLVM based backend")
 
-include(GitFunctions)
-get_branch_from_git()
-# if we are not on master or develop set the submodules to develop
-#IF(NOT ${GIT_BRANCH} MATCHES "master") 
-#	IF(NOT ${GIT_BRANCH} MATCHES "develop") 
-#		message(STATUS "main branch is '${GIT_BRANCH}', setting submodules to 'develop'")
-#		set(GIT_BRANCH develop)
-#	endif()
-#endif()
-
-### set the directory names of the submodules
-set(GIT_SUBMODULES elfio libGIS scc dbt-core)
-set(GIT_SUBMODULE_DIR_scc .)
-set(GIT_SUBMODULE_DIR_dbt-core .)
-set(GIT_SUBMODULE_DIR_riscv .)
-### set each submodules's commit or tag that is to be checked out
-### (leave empty if you want master)
-#set(GIT_SUBMODULE_VERSION_sc-comp 3af6b9836589b082c19d9131c5d0b7afa8ddd7cd)
-set(GIT_SUBMODULE_BRANCH_scc ${GIT_BRANCH})
-set(GIT_SUBMODULE_BRANCH_dbt-core ${GIT_BRANCH})
-set(GIT_SUBMODULE_BRANCH_riscv ${GIT_BRANCH})
-
 include(GNUInstallDirs)
 #include(Submodules)
 include(Conan)

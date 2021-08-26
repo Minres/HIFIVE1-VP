@@ -33,10 +33,10 @@
 #ifndef _SYSC_TLM_EXTENSIONS_H_
 #define _SYSC_TLM_EXTENSIONS_H_
 
-#include "tlm/tlm_extensions.h"
+#include "tlm/scc/tlm_extensions.h"
 
 namespace sysc {
-struct tlm_signal_uart_extension : public tlm::tlm_unmanaged_extension<tlm_signal_uart_extension> {
+struct tlm_signal_uart_extension : public tlm::scc::tlm_unmanaged_extension<tlm_signal_uart_extension> {
 
     struct uart_tx {
         unsigned data_bits : 4;
@@ -48,7 +48,7 @@ struct tlm_signal_uart_extension : public tlm::tlm_unmanaged_extension<tlm_signa
     sc_core::sc_time start_time;
 };
 
-struct tlm_signal_spi_extension : public tlm::tlm_unmanaged_extension<tlm_signal_spi_extension> {
+struct tlm_signal_spi_extension : public tlm::scc::tlm_unmanaged_extension<tlm_signal_spi_extension> {
 
     struct spi_tx {
         unsigned data_bits : 5;
@@ -59,7 +59,7 @@ struct tlm_signal_spi_extension : public tlm::tlm_unmanaged_extension<tlm_signal
     } tx;
     sc_core::sc_time start_time;
 
-    void copy_from(tlm_extension_base const &other) override {
+    void copy_from(tlm::tlm_extension_base const &other) override {
         auto &o = static_cast<const type &>(other);
         this->tx = o.tx;
         this->start_time = o.start_time;

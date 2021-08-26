@@ -3,7 +3,7 @@
 	url = https://git.minres.com/DBT-RISE/DBT-RISE-Core.git
 [submodule "scc"]
 	path = scc
-	url = https://git.minres.com/SystemC/SystemC-Components.git
+	url =  https://github.com/Minres/SystemC-Components.git
 [submodule "external/elfio"]
 	path = external/elfio
 	url = http://git.code.sf.net/p/elfio/code

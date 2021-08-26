@@ -47,7 +47,7 @@
 #include "scc/memory.h"
 #include "scc/router.h"
 #include "scc/utilities.h"
-#include "tlm/tlm_signal_sockets.h"
+#include "tlm/scc/tlm_signal_sockets.h"
 #include <array>
 #include <memory>
 #include <sysc/kernel/sc_module.h>
@@ -58,8 +58,8 @@ class fe310 : public sc_core::sc_module {
 public:
     SC_HAS_PROCESS(fe310);// NOLINT
 
-    sc_core::sc_vector<tlm::tlm_signal_initiator_socket<sc_dt::sc_logic>> pins_o;
-    sc_core::sc_vector<tlm::tlm_signal_target_socket<sc_dt::sc_logic>> pins_i;
+    sc_core::sc_vector<tlm::scc::tlm_signal_initiator_socket<sc_dt::sc_logic>> pins_o;
+    sc_core::sc_vector<tlm::scc::tlm_signal_target_socket<sc_dt::sc_logic>> pins_i;
 
     sc_core::sc_in<bool> erst_n;
 
@@ -92,8 +92,8 @@ private:
     sc_core::sc_vector<sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS>> s_global_int, s_local_int;
     sc_core::sc_signal<bool, sc_core::SC_MANY_WRITERS> s_core_int;
     
-    sc_core::sc_vector<scc::tlm_signal_bool_opt_in> s_dummy_sck_i;
-    sc_core::sc_vector<scc::tlm_signal_bool_opt_out> s_dummy_sck_o;
+    sc_core::sc_vector<tlm::scc::tlm_signal_bool_opt_in> s_dummy_sck_i;
+    sc_core::sc_vector<tlm::scc::tlm_signal_bool_opt_out> s_dummy_sck_o;
 
 protected:
     void gen_reset();

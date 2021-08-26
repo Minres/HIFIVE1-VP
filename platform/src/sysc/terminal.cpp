@@ -46,7 +46,7 @@ terminal::terminal(const sc_core::sc_module_name &nm)
 , NAMED(tx_o)
 , NAMED(rx_i)
 , NAMED(write_to_ws, false) {
-    rx_i.register_nb_transport([this](tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
+    rx_i.register_nb_transport([this](tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &gp, tlm::tlm_phase &phase,
                                       sc_core::sc_time &delay) -> tlm::tlm_sync_enum {
         this->receive(gp, delay);
         return tlm::TLM_COMPLETED;
@@ -57,13 +57,13 @@ terminal::~terminal() = default;
 
 void terminal::before_end_of_elaboration() {
     if (write_to_ws.get_value()) {
-        SCCTRACE() << "Adding WS handler for " << (std::string{"/ws/"} + name());
+        SCCTRACE(SCMOD) << "Adding WS handler for " << (std::string{"/ws/"} + name());
         handler = std::make_shared<WsHandler>();
         sc_comm_singleton::inst().registerWebSocketHandler((std::string{"/ws/"} + name()).c_str(), handler);
     }
 }
 
-void terminal::receive(tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, sc_core::sc_time &delay) {
+void terminal::receive(tlm::scc::tlm_signal_gp<sc_dt::sc_logic> &gp, sc_core::sc_time &delay) {
     sysc::tlm_signal_uart_extension *ext;
     gp.get_extension(ext);
     if (ext && ext->start_time != last_tx_start) {
@@ -80,7 +80,7 @@ void terminal::receive(tlm::tlm_signal_gp<sc_dt::sc_logic> &gp, sc_core::sc_time
                     this->handler->send(os.str());
                 });
             else
-                SCCINFO(this->name()) << " receive: '" << msg << "'";
+                SCCINFO(SCMOD) << " receive: '" << msg << "'";
             queue.clear();
         }
     }
