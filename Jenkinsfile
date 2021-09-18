@@ -29,12 +29,12 @@ void build_hifive_vp() {
     try {
         sh("conan profile new default --detect --force")
         sh("conan profile update settings.compiler.libcxx=libstdc++11 default")
-        sh("conan remote add minres https://api.bintray.com/conan/minres/conan-repo --force")
-        sh("conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan --force")
+        sh("conan remote add minres https://artifactory.minres.com/artifactory/api/conan/oss --force")
+        //sh("conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan --force")
     }
     catch (exc) {
-            echo 'Conan configured'
-        }
+        echo 'Conan configured'
+    }
     sh("rm -rf HIFIVE1-VP/build-ubuntu")
     sh("mkdir -p HIFIVE1-VP/build-ubuntu")
     sh("cd HIFIVE1-VP && git submodule update --recursive")
