@@ -30,16 +30,16 @@ void build_hifive_vp() {
         sh("conan profile new default --detect --force")
         sh("conan profile update settings.compiler.libcxx=libstdc++11 default")
         sh("conan remote add minres https://artifactory.minres.com/artifactory/api/conan/oss --force")
-        sh("conan remote remove bincrafters")
+        sh("cmake --version")
     }
     catch (exc) {
         echo 'Conan configured'
     }
-    sh("rm -rf HIFIVE1-VP/build-ubuntu")
-    sh("mkdir -p HIFIVE1-VP/build-ubuntu")
+    sh("rm -rf HIFIVE1-VP/build")
+    sh("mkdir -p HIFIVE1-VP/build")
     sh("cd HIFIVE1-VP && git submodule update --recursive")
-    sh("cd HIFIVE1-VP/build-ubuntu && MAKE_FLAGS='-j4' cmake .. && make -j4")
-    fingerprint 'HIFIVE1-VP/build-ubuntu/bin/riscv.vp'
+    sh("cd HIFIVE1-VP/build && MAKE_FLAGS='-j4' cmake .. && make -j4")
+    fingerprint 'HIFIVE1-VP/build/bin/riscv.vp'
 }
 
 void build_hifive_without_scv() {
@@ -47,16 +47,16 @@ void build_hifive_without_scv() {
         sh("conan profile new default --detect --force")
         sh("conan profile update settings.compiler.libcxx=libstdc++11 default")
         sh("conan remote add minres https://artifactory.minres.com/artifactory/api/conan/oss --force")
-        //sh("conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan --force")
+        sh("cmake --version")
     }
     catch (exc) {
         echo 'Conan configured'
     }
-    sh("rm -rf HIFIVE1-VP/build-ubuntu")
-    sh("mkdir -p HIFIVE1-VP/build-ubuntu")
+    sh("rm -rf HIFIVE1-VP/build")
+    sh("mkdir -p HIFIVE1-VP/build")
     sh("cd HIFIVE1-VP && git submodule update --recursive")
-    sh("cd  HIFIVE1-VP/build-ubuntu && MAKE_FLAGS='-j4' cmake .. -DENABLE_SCV=FALSE && make -j4")
-    fingerprint 'HIFIVE1-VP/build-ubuntu/bin/riscv.vp'
+    sh("cd  HIFIVE1-VP/build && MAKE_FLAGS='-j4' cmake .. -DENABLE_SCV=FALSE && make -j4")
+    fingerprint 'HIFIVE1-VP/build/bin/riscv.vp'
 }
 
 
@@ -101,7 +101,6 @@ pipeline {
                     }
                 }
             }
-
          }
         }
     }
