@@ -41,7 +41,7 @@ endif()
 
 add_library(platform ${LIB_SOURCES})
 target_include_directories(platform PUBLIC ../incl)
-target_link_libraries(platform PUBLIC riscv_sc CONAN_PKG::seasocks external)
+target_link_libraries(platform PUBLIC dbt-rise-riscv-sc CONAN_PKG::seasocks external)
 if(VERILATOR_FOUND)
 	message(STATUS "Verilator found at ${VERILATOR_EXECUTABLE}")
     target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/incl/sysc/rtl)	
@@ -56,7 +56,7 @@ set_target_properties(platform PROPERTIES
 add_executable(riscv-vp sc_main.cpp)
 # include files for this application
 target_include_directories(riscv-vp SYSTEM PRIVATE ${LLVM_INCLUDE_DIRS})
-target_link_libraries(riscv-vp PUBLIC platform riscv_sc)
+target_link_libraries(riscv-vp PUBLIC platform dbt-rise-riscv-sc)
 if(VERILATOR_FOUND)
 	set_source_files_properties(sc_main.cpp PROPERTIES COMPILE_DEFINITIONS HAS_VERILATOR)
 	target_include_directories(riscv-vp SYSTEM PRIVATE ${VERILATOR_INCLUDE_DIR})
