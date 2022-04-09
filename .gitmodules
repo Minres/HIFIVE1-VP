@@ -1,6 +1,6 @@
-[submodule "dbt-core"]
-	path = dbt-core
-	url = https://git.minres.com/DBT-RISE/DBT-RISE-Core.git
+[submodule "dbt-rise-core"]
+	path = dbt-rise-core
+	url = https://github.com/Minres/DBT-RISE-Core.git
 [submodule "scc"]
 	path = scc
 	url =  https://github.com/Minres/SystemC-Components.git
@@ -10,6 +10,6 @@
 [submodule "external/libGIS"]
 	path = external/libGIS
 	url = https://github.com/vsergeev/libGIS.git
-[submodule "riscv"]
-	path = riscv
-	url = https://git.minres.com/DBT-RISE/DBT-RISE-RISCV.git
+[submodule "dbt-rise-riscv"]
+	path = dbt-rise-riscv
+	url = https://github.com/Minres/DBT-RISE-RISCV.git
