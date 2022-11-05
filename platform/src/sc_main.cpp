@@ -85,6 +85,7 @@ int sc_main(int argc, char *argv[]) {
     CLIParser parser(argc, argv);
     scc::stream_redirection cout_redir(std::cout, scc::log::INFO);
     scc::stream_redirection cerr_redir(std::cerr, scc::log::ERROR);
+    sc_report_handler::set_actions(SC_ERROR, SC_LOG | SC_CACHE_REPORT | SC_DISPLAY | SC_STOP);
     if (!parser.is_valid()) return ERROR_IN_COMMAND_LINE;
     ///////////////////////////////////////////////////////////////////////////
     // set up infrastructure

@@ -39,7 +39,73 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(warnings "/W4 /WX /EHsc")
 endif()
 
-setup_conan(TARGETS)
+include(GNUInstallDirs)
+include(ConanInline)
+
+set(CONAN_BOOST_OPTIONS
+boost:fPIC=True
+boost:shared=True
+boost:header_only=False 
+boost:without_contract=True
+boost:without_graph=True
+boost:without_graph_parallel=True
+boost:without_iostreams=True
+boost:without_json=True
+boost:without_locale=True
+boost:without_log=True
+boost:without_math=True
+boost:without_mpi=True
+boost:without_nowide=True
+boost:without_python=True
+boost:without_random=True
+boost:without_regex=True
+boost:without_stacktrace=True
+boost:without_test=True
+boost:without_timer=True
+boost:without_type_erasure=True
+boost:without_wave=True
+)
+
+set(B2_VERSION 4.8.0)
+set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 b2/${B2_VERSION} boost/1.75.0 gsl-lite/0.37.0 elfio/3.8 tcc/0.9.27 seasocks/1.4.4)
+
+set(CONAN_PACKAGE_OPTIONS seasocks:shared=True fmt:header_only=True ${CONAN_BOOST_OPTIONS})
+if(FORCE_SYSTEMC OR NOT DEFINED ENV{SYSTEMC_HOME})
+    list(APPEND CONAN_PACKAGE_LIST systemc/2.3.3 systemc-cci/1.0.0)
+    list(APPEND CONAN_PACKAGE_OPTIONS systemc-cci:shared=False)
+endif()
+
+conan_check()
+conan_add_remote(NAME minres URL https://git.minres.com/api/packages/Tooling/conan)
+
+# Boost on CentOS 7 quirks: the b2 of conan-center is build against a newer libstdc++ and therefore does not run
+# with the oooooold libs on CentOS 7. Therefore we build our own version of b2 if it is not there
+set(B2_META $ENV{HOME}/.conan/data/b2/${B2_VERSION}/_/_/metadata.json)
+if(DEFINED ENV{CONAN_USER_HOME})
+	set(B2_META $ENV{CONAN_USER_HOME}/.conan/data/b2/${B2_VERSION}/_/_/metadata.json)
+endif()
+if(NOT EXISTS ${B2_META})
+	conan_configure(REQUIRES b2/${B2_VERSION})
+	conan_cmake_autodetect(settings)
+	conan_cmake_install(PATH_OR_REFERENCE . BUILD b2 SETTINGS ${settings})
+endif()
+# Boost on CentOS 7 quirks end
+
+conan_cmake_configure(REQUIRES ${CONAN_PACKAGE_LIST}
+                      GENERATORS cmake_find_package cmake
+                      OPTIONS ${CONAN_PACKAGE_OPTIONS}
+                      )
+
+conan_install()
+#conan_setup(TARGETS)
+include(conanbuildinfo)
+find_package(tcc)
+find_package(elfio)
+find_package(fmt)
+find_package(gsl-lite)
+find_package(ZLIB)
+find_package(Seasocks)
+find_package(Threads REQUIRED)
 
 # This line finds the boost lib and headers. 
 set(Boost_NO_BOOST_CMAKE ON) #  Don't do a find_package in config mode before searching for a regular boost install.

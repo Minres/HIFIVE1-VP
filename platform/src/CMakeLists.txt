@@ -41,7 +41,7 @@ endif()
 
 add_library(platform ${LIB_SOURCES})
 target_include_directories(platform PUBLIC ../incl)
-target_link_libraries(platform PUBLIC dbt-rise-riscv-sc CONAN_PKG::seasocks external)
+target_link_libraries(platform PUBLIC dbt-rise-riscv-sc Seasocks::seasocks external)
 if(VERILATOR_FOUND)
 	message(STATUS "Verilator found at ${VERILATOR_EXECUTABLE}")
     target_include_directories(platform PRIVATE ${PROJECT_SOURCE_DIR}/incl/sysc/rtl)	

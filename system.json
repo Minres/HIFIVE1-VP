@@ -11,7 +11,7 @@
 			"i_terminal.write_to_ws" : false,
 			"i_fe310": {
 				"enableTracing" : false,
-				"i_gpio.write_to_ws": true,
+				"i_gpio0.write_to_ws": true,
 				"i_pwm0.enableTracing" : true,
 				"i_pwm0.regs.enableTracing" : true,
 				"i_uart0.bit_true_transfer": false,

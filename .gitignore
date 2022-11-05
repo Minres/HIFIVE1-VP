@@ -31,3 +31,4 @@ language.settings.xml
 /*.out
 /dump.json
 /*.c
+/_build/
