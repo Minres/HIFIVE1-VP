@@ -11,16 +11,23 @@
 			"i_terminal.write_to_ws" : false,
 			"i_fe310": {
 				"enableTracing" : false,
+				"i_gpio0.write_to_ws": true,
 				"i_pwm0.enableTracing" : true,
 				"i_pwm0.regs.enableTracing" : true,
 				"i_uart0.bit_true_transfer": false,
-				"i_uart1.bit_true_transfer": false,
-				"i_qspi0.bit_true_transfer": false ,
+				"i_uart1":{
+					"bit_true_transfer": false
+				},
+				"i_qspi0":{
+					"bit_true_transfer": false
+				},
 				"i_qspi1":{
 					"bit_true_transfer": false,
 					"enableTracing": true
 				},
-				"i_qspi2.bit_true_transfer": false
+				"i_qspi2":{
+					"bit_true_transfer": false
+				}
 			}
 		}
 	}
