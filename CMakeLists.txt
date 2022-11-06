@@ -67,7 +67,7 @@ boost:without_wave=True
 )
 
 set(B2_VERSION 4.8.0)
-set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 b2/${B2_VERSION} boost/1.75.0 gsl-lite/0.37.0 elfio/3.8 seasocks/1.4.4)
+set(CONAN_PACKAGE_LIST fmt/6.1.2 zlib/1.2.11 b2/${B2_VERSION} boost/1.75.0 gsl-lite/0.37.0 elfio/3.8 tcc/0.9.27 seasocks/1.4.4)
 
 set(CONAN_PACKAGE_OPTIONS seasocks:shared=True fmt:header_only=True ${CONAN_BOOST_OPTIONS})
 if(FORCE_SYSTEMC OR NOT DEFINED ENV{SYSTEMC_HOME})
@@ -91,17 +91,18 @@ if(NOT EXISTS ${B2_META})
 endif()
 # Boost on CentOS 7 quirks end
 
+# forca a local build of tcc to make sure path to libtcc1.a is correct
+conan_configure(REQUIRES tcc/0.9.27)
+conan_cmake_autodetect(settings)
+set(settings ${settings} compiler.cppstd=${CMAKE_CXX_STANDARD})
+conan_cmake_install(PATH_OR_REFERENCE . BUILD tcc SETTINGS ${settings})
+
 conan_cmake_configure(REQUIRES ${CONAN_PACKAGE_LIST}
                       GENERATORS cmake_find_package cmake
                       OPTIONS ${CONAN_PACKAGE_OPTIONS}
                       )
 
 conan_install()
-# forca a local build of tcc to make sure path to libtcc1.a is correct
-conan_configure(REQUIRES tcc/0.9.27)
-conan_cmake_autodetect(settings)
-set(settings ${settings} compiler.cppstd=${CMAKE_CXX_STANDARD})
-conan_cmake_install(PATH_OR_REFERENCE . BUILD tcc SETTINGS ${settings})
 
 #conan_setup(TARGETS)
 include(conanbuildinfo)
