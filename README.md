@@ -19,7 +19,7 @@ HIFIVE1-VP uses libGIS (https://github.com/vsergeev/libGIS) under MIT license
 ```
 sudo apt-get install -y git python3-pip build-essential cmake libloki-dev zlib1g-dev libncurses5-dev \	
     libboost-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev llvm-dev llvm-doc
-pip3 install --user conan
+pip3 install --user conan==1.59
 ```
 
 ### prepare Fedora 28
@@ -28,7 +28,7 @@ pip3 install --user conan
 #prepare system
 dnf install @development-tools gcc-c++ boost-devel zlib-devel loki-lib-devel cmake python2 python3 llvm-devel llvm-static
 #install conan
-pip3 install --user conan
+pip3 install --user conan==1.59
 export PATH=${PATH}:$HOME/.local/bin
 ```
  
