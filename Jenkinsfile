@@ -20,7 +20,7 @@ void checkout_hifive_vp() {
         submoduleCfg: [],
         userRemoteConfigs: [[
             credentialsId: 'gitea-jenkins',
-            url: 'https://git.minres.com/VP/HIFIVE1-VP.git'
+            url: 'https://github.com/Minres/HIFIVE1-VP.git'
         ]]
     ])
 }
@@ -46,7 +46,7 @@ void build_hifive_without_scv() {
     try {
         sh("conan profile new default --detect --force")
         sh("conan profile update settings.compiler.libcxx=libstdc++11 default")
-        sh("conan remote add minres https://artifactory.minres.com/artifactory/api/conan/oss --force")
+        sh("conan remote add minreshttps://git.minres.com/api/packages/Tooling/conan --force")
         sh("cmake --version")
     }
     catch (exc) {
