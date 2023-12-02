@@ -1,4 +1,4 @@
-mkdir -f build/Release
+mkdir -p build/Release
 cd build/Release
 cmake ../.. -DCMAKE_BUILD_TYPE=RelWithDebInfo && \
 	cmake --build . && \
