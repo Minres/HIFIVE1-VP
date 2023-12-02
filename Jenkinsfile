@@ -29,7 +29,7 @@ void build_hifive_vp() {
     try {
         sh("conan profile new default --detect --force")
         sh("conan profile update settings.compiler.libcxx=libstdc++11 default")
-        sh("conan remote add minres https://artifactory.minres.com/artifactory/api/conan/oss --force")
+        sh("conan remote add minres https://git.minres.com/api/packages/Tooling/conan --force")
         sh("cmake --version")
     }
     catch (exc) {
