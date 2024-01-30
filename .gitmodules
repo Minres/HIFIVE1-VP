@@ -4,9 +4,6 @@
 [submodule "scc"]
 	path = scc
 	url =  https://github.com/Minres/SystemC-Components.git
-[submodule "external/elfio"]
-	path = external/elfio
-	url = http://git.code.sf.net/p/elfio/code
 [submodule "external/libGIS"]
 	path = external/libGIS
 	url = https://github.com/vsergeev/libGIS.git
